@@ -1,0 +1,142 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+    <link href="content/jquery-ui-1.8.18.custom.css" rel="stylesheet" type="text/css" >
+    <link href="content/site.css" rel="stylesheet" type="text/css" >
+
+    <script type="text/javascript" src="scripts/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui-1.8.18.custom.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="scripts/additional-methods.min.js"></script>
+    <script type="text/javascript" src="scripts/messages_pl.js"></script>
+    <script type="text/javascript" src="scripts/knockout-2.0.0.js"></script>
+    <script type="text/javascript" src="scripts/ut.js"></script>
+    <script type="text/javascript" src="scripts/ui.js"></script>
+    
+    <script type="text/javascript" >
+        $(function(){
+    
+            //configureValidation();
+            configureDynamicStyles();
+            configureTeamNatureSelect();
+            
+            var viewModel = new UtViewModel();
+            
+            ko.applyBindings(viewModel);
+            
+        });
+    
+    </script>
+    
+</head>
+<body>
+    <div id="content" class="ui-corner-all" >
+        <h2>Kreator drużyny</h2>
+        <form>
+            <div id="teamNature" class="section" >
+                <div class="sectionName">
+                    Drużyna
+                </div>
+                <div class="sectionContent">
+                    <div class="field">
+                        <label for="teamPoints" >Punkty początkowe:</label>
+                        <input type="text" name="teamPoints" data-bind="value: team.points" />
+                    </div>
+                    <div class="field">
+                        
+                        <label for="teamNature" >
+                            Charakter drużyny:
+                        </label>
+
+                        <select name="teamNature" data-bind="value: team.nature" >
+                            <option></option>
+                            <option value="D" >Dobry</option>
+                            <option value="N" >Neutralny</option>
+                            <option value="Z" >Zły</option>
+                        </select>
+       
+                    </div>
+                </div>
+            </div>
+            
+            <div id="characterForm" class="section" style="display: none;" >
+                <div class="sectionName">
+                    Postać
+                </div>
+                <div class="sectionContent">
+                    <div class="field">
+                        <label for="characterCost" >Koszt postaci</label>
+                        <span data-bind="text: characterCost" >
+                            
+                        </span>
+                    </div>
+                    <div class="field">
+                        <label for="name" >
+                            Imię:
+                        </label>
+                        <input name="name" type="text" data-bind="value: character.name" />       
+                    </div>
+                    <div class="field">
+                        <label for="race" >
+                            Rasa:
+                        </label>
+                        
+                        <select name="race" type="text"
+                        data-bind="options: availableRaces,
+                                   optionsText: function(item){ return item.name + ' (' + item.cost + 'p)' },
+                                   value: character.race" >
+                        </select>   
+                    </div>
+                    
+                    <div class="field">
+                        <label for="profession" >
+                            Profesja:
+                        </label>
+                        <select name="profession" type="text" class="required" 
+                        data-bind="options: availableProfessions,
+                                   optionsText: function(item) { 
+                                       return item.name + ' (' + item.cost  + 'p)' 
+                                   }, 
+                           value: character.profession">
+                        </select>      
+                    </div>
+                    <div class="field">
+                        <label></label>
+                        <input type="button" value="Dodaj postać" data-bind="click: addCharacter" />
+                    </div>
+                </div>
+            </div>
+            
+            <div id="teamCharacters" class="section" >
+                <div class="sectionName">
+                    Skład drużyny
+                </div>
+                <div class="field">
+                    <label>Pozostała liczba punktów:</label>
+                    <span data-bind="visible: team.characters, text: pointsAvailable" ></span>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Imię</th>
+                            <th>Rasa</th>
+                            <th>Profesja</th>
+                            <th>Koszt</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: team.characters">
+                        <tr>
+                            <td data-bind="text: name"></td>
+                            <td data-bind="text: race.name"></td>
+                            <td data-bind="text: profession.name"></td>
+                            <td data-bind="text: cost"></td>               
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </form>
+    </div>
+</body>
+</html>

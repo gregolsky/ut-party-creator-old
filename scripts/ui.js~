@@ -1,0 +1,16 @@
+
+var currentTeam = 
+
+$(function(){
+    
+    
+    
+    })
+
+var configureTeamNatureSelect = function(){
+    $("input[name=teamNature").change(function(){
+        
+        if 
+        
+        });
+}
