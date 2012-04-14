@@ -63,5 +63,9 @@ function UtViewModel(){
         self.team.characters.push(character);
     }
     
+    self.removeCharacter = function(character){
+        self.team.characters.remove(character);
+    }
+    
 }
 

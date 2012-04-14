@@ -79,7 +79,7 @@
                         <label for="name" >
                             Imię:
                         </label>
-                        <input name="name" type="text" data-bind="value: character.name" />       
+                        <input name="name" type="text" data-bind="value: character.name" required />       
                     </div>
                     <div class="field">
                         <label for="race" >
@@ -131,6 +131,7 @@
                             <th>Rasa</th>
                             <th>Profesja</th>
                             <th>Koszt</th>
+                            <th>Akcja</th>
                         </tr>
                     </thead>
                     <tbody data-bind="foreach: team.characters">
@@ -138,7 +139,10 @@
                             <td data-bind="text: name()"></td>
                             <td data-bind="text: raceById(raceId()).name"></td>
                             <td data-bind="text: professionById(professionId()).name"></td>
-                            <td data-bind="text: cost"></td>               
+                            <td data-bind="text: cost"></td>
+                            <td>
+                                <a href='#' data-bind='click: $root.removeCharacter'>Usuń</a>
+                            </td>               
                         </tr>
                     </tbody>
                 </table>
