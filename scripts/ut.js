@@ -76,6 +76,96 @@ Professions = [
   new Profession(33, "Alchemik", 64)
 ]
 
+function _ItemType(){
+    var self = this;
+    self.Helmet = 1;
+    self.Armor = 2;
+    self.Shield = 3;
+    self.MeleeWeapon = 4;
+    self.RangedWeapon = 5;
+}
+
+ItemType = new _ItemType();
+
+function Item(id, name, type, cost){
+    var self = this;
+    self.id = id;
+    self.name = name;
+    self.type = type;
+    self.cost = cost;
+}
+
+function _ArmorClass(){
+    var self = this;
+    self.Light = 1;
+    self.Heavy = 2;
+}
+
+ArmorClass = new _ArmorClass();
+
+function ArmorProperties(armorClass){
+    var self = this;
+    self.armorClass = armorClass;
+}
+
+function MeleeWeaponProperties(normalAttackMod, strengthAttackMod, precisionAttackMod, counterAttack, isTwoHanded, isLight){
+    var self = this;
+    self.normalAttackMod = normalAttackMod;
+    self.strengthAttackMod = strengthAttackMod;
+    self.precisionAttackMod = precisionAttackMod;
+    self.counterAttack = counterAttack;
+    self.isTwoHanded = isTwoHanded;
+    self.isLight = isLight;                
+}
+
+function RangedWeaponProperties(dmg, range, isArmorPiercing){
+    var self = this;
+    self.damage = dmg;
+    self.range = range;
+    self.isArmorPiercing = isArmorPiercing;
+}
+
+Items = [
+    // Melee (normalAttackMod, strengthAttackMod, precisionAttackMod, counterAttack, isTwoHanded, isLight)
+    $.extend(new Item(1, "Miecz", ItemType.MeleeWeapon, 11), new MeleeWeaponProperties(1, 0, 0, false, false, false)),
+    $.extend(new Item(2, "Miecz krótki", ItemType.MeleeWeapon, 11), new MeleeWeaponProperties(1, 0, 0, false, false, false)),
+    $.extend(new Item(3, "Miecz półtoraręczny", ItemType.MeleeWeapon, 15), new MeleeWeaponProperties(1, 1, -1, false, true, false)),
+    $.extend(new Item(4, "Topór", ItemType.MeleeWeapon, 11), new MeleeWeaponProperties(0, 1, -2, false, false, false)),            
+    $.extend(new Item(5, "Młot", ItemType.MeleeWeapon, 11), new MeleeWeaponProperties(0, 1, -2, false, false, false)),
+    $.extend(new Item(6, "Miecz dwuręczny", ItemType.MeleeWeapon, 20), new MeleeWeaponProperties(0, 2, -2, false, true, false)),
+    $.extend(new Item(7, "Topór dwuręczny", ItemType.MeleeWeapon, 20), new MeleeWeaponProperties(0, 2, -2, false, true, false)),
+    $.extend(new Item(8, "Młot dwuręczny", ItemType.MeleeWeapon, 20), new MeleeWeaponProperties(0, 2, -2, false, true, false)),
+    $.extend(new Item(9, "Sztylet", ItemType.MeleeWeapon , 5), new MeleeWeaponProperties(0, -3, 2, false, false, true)),
+    $.extend(new Item(10, "Nóż", ItemType.MeleeWeapon, 5), new MeleeWeaponProperties(0, -3, 2, false, false, true)),
+    $.extend(new Item(11, "Szabla", ItemType.MeleeWeapon, 14), new MeleeWeaponProperties(1, -1, 2, false, false, false)),
+    $.extend(new Item(12, "Rapier", ItemType.MeleeWeapon, 14), new MeleeWeaponProperties(1, -1, 2, false, false, false)),
+    $.extend(new Item(13, "Włócznia", ItemType.MeleeWeapon, 13), new MeleeWeaponProperties(1, -1, -1, true, false, false)),
+    $.extend(new Item(14, "Halabarda", ItemType.MeleeWeapon, 17), new MeleeWeaponProperties(1, -1, -1, true, true, false)),
+    $.extend(new Item(15, "Kostur", ItemType.MeleeWeapon, 5), new MeleeWeaponProperties(0, 0, -2, false, false, false)),
+    $.extend(new Item(16, "Maczuga", ItemType.MeleeWeapon, 5), new MeleeWeaponProperties(0, 0, -2, false, false, false)),
+    $.extend(new Item(17, "Pałka", ItemType.MeleeWeapon, 5), new MeleeWeaponProperties(0, 0, -2, false, false, false)),
+    $.extend(new Item(18, "Widły", ItemType.MeleeWeapon, 5), new MeleeWeaponProperties(0, 0, -2, false, false, false)),
+    $.extend(new Item(19, "Kij", ItemType.MeleeWeapon, 5), new MeleeWeaponProperties(0, 0, -2, false, false, false)),
+    
+    // Armor
+    $.extend(new Item(20, "Hełm 'Łebka'", ItemType.Helmet, 4), new ArmorProperties(ArmorClass.Light)),
+    $.extend(new Item(21, "Hełm garnczkowy", ItemType.Helmet, 7), new ArmorProperties(ArmorClass.Heavy)),
+    $.extend(new Item(22, "Koszulka kolcza", ItemType.Armor, 4), new ArmorProperties(ArmorClass.Light)),
+    $.extend(new Item(23, "Napierśnik płytowy", ItemType.Armor, 7), new ArmorProperties(ArmorClass.Heavy)),
+    $.extend(new Item(24, "Nagolennik skórzany", ItemType.Armor, 4), new ArmorProperties(ArmorClass.Light)),
+    $.extend(new Item(25, "Nagolennik metalowy", ItemType.Armor, 7), new ArmorProperties(ArmorClass.Heavy)),
+    $.extend(new Item(26, "Tarcza stalowa", ItemType.Shield, 10), new ArmorProperties(ArmorClass.Heavy)),
+    $.extend(new Item(27, "Tarcza drewniana", ItemType.Shield, 3), new ArmorProperties(ArmorClass.Light)),
+    
+    // Ranged
+    $.extend(new Item(28, "Łuk", ItemType.RangedWeapon, 10), new RangedWeaponProperties(1, 60)),
+    $.extend(new Item(29, "Kusza", ItemType.RangedWeapon, 16), new RangedWeaponProperties(1, 40), true),
+    $.extend(new Item(30, "Proca", ItemType.RangedWeapon, 3), new RangedWeaponProperties(1, 30)),
+    $.extend(new Item(31, "Strzelba krasnoludzka", ItemType.RangedWeapon, 22), new RangedWeaponProperties(2, 40)),
+    $.extend(new Item(32, "Łuk elfów", ItemType.RangedWeapon, 19), new RangedWeaponProperties(1, 60))                                                 
+];
+
+
 function professionById(id){
     if (id){
         for (var i = 0; i < Professions.length; i++){
