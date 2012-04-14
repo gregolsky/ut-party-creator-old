@@ -41,7 +41,11 @@
                 <div class="sectionContent">
                     <div class="field">
                         <label for="teamPoints" >Punkty początkowe:</label>
-                        <input type="text" name="teamPoints" data-bind="value: team.points" />
+                        <select type="text" name="teamPoints" data-bind="value: team.points" >
+                            <option value="750">750</option>
+                            <option value="1000">1000</option>
+                            <option value="1500">1500</option>
+                        </select>
                     </div>
                     <div class="field">
                         
@@ -67,7 +71,7 @@
                 <div class="sectionContent">
                     <div class="field">
                         <label for="characterCost" >Koszt postaci</label>
-                        <span data-bind="text: characterCost" >
+                        <span data-bind="text: character.cost" >
                             
                         </span>
                     </div>
@@ -83,9 +87,12 @@
                         </label>
                         
                         <select name="race" type="text"
-                        data-bind="options: availableRaces,
-                                   optionsText: function(item){ return item.name + ' (' + item.cost + 'p)' },
-                                   value: character.race" >
+                            data-bind="options: availableRaces,
+                                       optionsValue: 'id',
+                                       optionsText: function(item){ 
+                                           return item.name + ' (' + item.cost + 'p)' 
+                                        },
+                                       value: character.raceId" >
                         </select>   
                     </div>
                     
@@ -94,11 +101,12 @@
                             Profesja:
                         </label>
                         <select name="profession" type="text" class="required" 
-                        data-bind="options: availableProfessions,
-                                   optionsText: function(item) { 
-                                       return item.name + ' (' + item.cost  + 'p)' 
-                                   }, 
-                           value: character.profession">
+                            data-bind="options: availableProfessions,
+                                       optionsValue: 'id',
+                                       optionsText: function(item){ 
+                                           return item.name + ' (' + item.cost + 'p)' 
+                                        },
+                                       value: character.professionId">
                         </select>      
                     </div>
                     <div class="field">
@@ -114,7 +122,7 @@
                 </div>
                 <div class="field">
                     <label>Pozostała liczba punktów:</label>
-                    <span data-bind="visible: team.characters, text: pointsAvailable" ></span>
+                    <span data-bind="text: pointsAvailable" ></span>
                 </div>
                 <table>
                     <thead>
@@ -127,9 +135,9 @@
                     </thead>
                     <tbody data-bind="foreach: team.characters">
                         <tr>
-                            <td data-bind="text: name"></td>
-                            <td data-bind="text: race.name"></td>
-                            <td data-bind="text: profession.name"></td>
+                            <td data-bind="text: name()"></td>
+                            <td data-bind="text: raceById(raceId()).name"></td>
+                            <td data-bind="text: professionById(professionId()).name"></td>
                             <td data-bind="text: cost"></td>               
                         </tr>
                     </tbody>

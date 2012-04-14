@@ -27,8 +27,10 @@ function UtViewModel(){
 
     self.team = new Team(ko.observable(), ko.observable())
     
-    self.character = new Character(ko.observable(), ko.observable(), ko.observable())
-    
+    self.costCalculationPolicy = new CharacterCostCalculationPolicy(self.team);
+        
+    self.character = new Character(ko.observable(), ko.observable(), ko.observable(), self.costCalculationPolicy);
+
     self.availableRaces = ko.computed(function(){
             var filteredRaces = [];
             var teamNature = self.team.nature();
@@ -45,38 +47,18 @@ function UtViewModel(){
         });
         
     self.availableProfessions = ko.observableArray(Professions);
-    
-    self.characterCost = ko.computed(function() {
-            var cost = 0;
-            
-            if (self.character && self.character.profession()){
-                cost += self.character.profession().cost;
-            }
-            
-            if (self.character && self.character.race()){
-                cost += self.character.race().cost;
-            }
-            
-            return cost;
-        });
         
     self.pointsAvailable = ko.computed(function(){
-            var totalTeamCost = 0;
-            ko.utils.arrayForEach(
-                self.team.characters(),
-                function(character){
-                    totalTeamCost += character.calculateCost();
-                });
-            
-            return self.team.points() - totalTeamCost;
+            return self.team.points() - self.team.cost();
         });
         
     self.addCharacter = function(){
         var data = self.character;
         var character = new Character(
-            data.name(),
-            data.race(), 
-            data.profession());
+            ko.observable(data.name()),
+            ko.observable(data.raceId()), 
+            ko.observable(data.professionId()),
+            self.costCalculationPolicy);
             
         self.team.characters.push(character);
     }

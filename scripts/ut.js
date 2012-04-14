@@ -7,33 +7,37 @@ var Race = function(id, name, cost, availableNatures){
     self.availableNatures = availableNatures;
 }
 
+Races = [
+    new Race(1, "Elf leśny", 70, [ "D" ]),
+    new Race(2, "Elf wyniosły", 70, [ "N" ]),
+    new Race(3, "Elf dziki", 70, [ "N" ]),
+    new Race(4, "Elf ciemny", 70, [ "Z" ]),
+    
+    new Race(5, "Krasnolud z Thargomind", 70, [ "N" ]),
+    new Race(6, "Krasnolud z Północy", 73, [ "Z" ]),
+    
+    new Race(7, "Człowiek", 50, [ "D", "N", "Z" ]),
+    
+    new Race(8, "Ork", 60, [ "N", "Z" ]),
+    
+    new Race(9, "Niziołek Krótkin", 40, [ "D" ]),
+    new Race(10, "Niziołek Mrokin", 40, [ "Z" ]),
+    
+    new Race(11, "Goblin", 38, [ "N", "Z" ]),
+    new Race(12, "Hobgoblin", 45, [ "Z" ]),
+    new Race(13, "Gnom", 36, [ "D" ]),
+    new Race(14, "Półogr", 92, [ "D", "N" ]),
+    new Race(15, "Czarny ork", 79, [ "Z" ]),
+    new Race(16, "Tigerianin", 65, [ "D" ]),
+    new Race(17, "Vorak", 64, [ "N" ])
+]
+
 var Profession = function(id, name, cost, onlyForHumans){
     var self = this;
     self.id = id;
     self.name = name;
     self.cost = cost
     self.onlyForHumans = onlyForHumans;
-}
-
-var Team = function(points, nature){
-    var self = this;
-    self.points = points;
-    self.nature = nature;
-    self.characters = ko.observableArray();
-}
-
-var Character = function(name, race, profession){
-    var self = this;
-    self.name = name;
-    self.race = race;
-    self.profession = profession;
-    self.calculateCost = function(){
-        return self.race.cost + self.profession.cost;
-    }
-    
-    self.cost = ko.computed(function(){
-        return self.race.cost + self.profession.cost;
-    });
 }
 
 Professions = [
@@ -72,29 +76,131 @@ Professions = [
   new Profession(33, "Alchemik", 64)
 ]
 
-Races = [
-    new Race(1, "Elf leśny", 70, [ "D" ]),
-    new Race(2, "Elf wyniosły", 70, [ "N" ]),
-    new Race(3, "Elf dziki", 70, [ "N" ]),
-    new Race(4, "Elf ciemny", 70, [ "Z" ]),
+function professionById(id){
+    if (id){
+        for (var i = 0; i < Professions.length; i++){
+            if (Professions[i].id == id){
+                return Professions[i];
+            }
+        }
+    }
     
-    new Race(5, "Krasnolud z Thargomind", 70, [ "N" ]),
-    new Race(6, "Krasnolud z Północy", 73, [ "Z" ]),
+    return null;
+}
+
+function raceById(id){
+    if (id){
+        for (var i = 0; i < Races.length; i++){
+            if (Races[i].id == id){
+                return Races[i];
+            }
+        }
+    }
     
-    new Race(7, "Człowiek", 50, [ "D", "N", "Z" ]),
+    return null;
+}
+
+var CharacterCostCalculationPolicy = function(team){
+    var self = this;
+    self.team = team;
+    self.calculate = function(character){
+        var baseCost = character.calculateBaseCost();
+        var extraProfessionCost = self.team.getCharacterExtraCost(character);
+        return baseCost + extraProfessionCost;
+    }
+}
+
+var Character = function(name, raceId, professionId, costCalculationPolicy){
+    var self = this;
+    self.name = name;
+    self.raceId = raceId;
+    self.professionId = professionId;
+    self.costCalculationPolicy = costCalculationPolicy;
+
+    self.calculateBaseCost = function(){
+        var cost = 0;
+        
+        if (self.professionId()){
+            var profession = professionById(self.professionId());
+            cost += profession.cost;
+        }
+        
+        if (self.raceId()){
+            var race = raceById(self.raceId())
+            cost += race.cost;
+        }
+        
+        return cost;
+    }
+
+    self.cost = ko.computed(function(){
+            if (!self.costCalculationPolicy){
+                return 0;
+            }
+            
+            return self.costCalculationPolicy.calculate(self);
+        });
+        
+    self.equals = function(another){
+        return self.name() == another.name() && 
+               self.raceId() == another.raceId() &&
+               self.professionId() == another.professionId();
+    }
     
-    new Race(8, "Ork", 60, [ "N", "Z" ]),
+    self.setCostCalculationPolicy = function(policy){
+        self.costCalculationPolicy = policy;
+    }
+}
+
+var Team = function(points, nature){
+    var self = this;
+    self.points = points;
+    self.nature = nature;
+    self.characters = ko.observableArray();
     
-    new Race(9, "Niziołek Krótkin", 40, [ "D" ]),
-    new Race(10, "Niziołek Mrokin", 40, [ "Z" ]),
+    self.cost = ko.computed(function(){
+        var result = 0;
+
+        ko.utils.arrayForEach(
+            self.characters(),
+            function(character){
+                result += character.cost();
+            });
+        
+        return result;
+    });
     
-    new Race(11, "Goblin", 38, [ "N", "Z" ]),
-    new Race(12, "Hobgoblin", 45, [ "Z" ]),
-    new Race(13, "Gnom", 36, [ "D" ]),
-    new Race(14, "Półogr", 92, [ "D", "N" ]),
-    new Race(15, "Czarny ork", 79, [ "Z" ]),
-    new Race(16, "Tigerianin", 65, [ "D" ]),
-    new Race(17, "Vorak", 64, [ "N" ])
-]
+    self.getCharacterExtraCost = function(arg){
+        if (!arg || !arg.professionId()){
+            return 0;
+        }
+        
+        var index = 0;
+        var professionId = arg.professionId();
+        var loopNoMore = false;
+        ko.utils.arrayForEach(
+            self.characters(),
+            function(character){
+                 
+                 if (loopNoMore){
+                     return false;
+                 }
+                 
+                 if (character == arg){
+                     loopNoMore = true;
+                     return false;
+                 }
+                 
+                 if (character.professionId() && character.professionId() == professionId){
+                     index++;
+                 }
+            });
+            
+        return index * 10;
+    }
+}
+
+
+
 
 
