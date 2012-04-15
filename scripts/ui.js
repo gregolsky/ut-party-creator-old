@@ -33,10 +33,17 @@ var configureEquipmentEditor = function(){
             var item = $("<li class='eqItem' ></li>").html(ui.draggable.html());
             item.appendTo(this);
             
+            var eqItemId = item.children(".itemId").text();
+            var eqItem = Enumerable.From(Items).Single(function(x){ return x.id == eqItemId; });
+            ViewModel.character().addItemToEquipment(eqItem);
+            
             $("<a style='float: right;' ></a>")
             .text("Usuń")
             .click(function(){
+                
+                ViewModel.character().removeItemFromEquipment(eqItem);
                 item.remove();
+                
                 if ($(self).children('li').length == 0){
                     $(self).append($('<li class="placeholder eqItem">Dodaj przedmioty</li>'));
                 }  
@@ -59,7 +66,7 @@ function UtViewModel(){
     
     self.costCalculationPolicy = new CharacterCostCalculationPolicy(self.team);
         
-    self.character = new Character(ko.observable(), ko.observable(), ko.observable(), self.costCalculationPolicy);
+    self.character = ko.observable(new Character(ko.observable(), ko.observable(), ko.observable(), self.costCalculationPolicy));
 
     self.availableRaces = ko.computed(function(){
             var teamNature = self.team.nature();
@@ -76,21 +83,27 @@ function UtViewModel(){
     self.availableMeleeWeapons = ko.computed(function(){
             return Enumerable.From(Items)
                 .Where(function(x){
-                    return x.type == ItemType.MeleeWeapon;
+                    return x.type == ItemType.MeleeWeapon 
+                            && x.canBeUsedBy(self.character());
                     }).ToArray();
         });
         
     self.availableRangedWeapons = ko.computed(function(){
             return Enumerable.From(Items)
                 .Where(function(x){
-                    return x.type == ItemType.RangedWeapon;
+                    return x.type == ItemType.RangedWeapon
+                            && x.canBeUsedBy(self.character());
                     }).ToArray();
         });
                 
     self.availableArmors = ko.computed(function(){
             return Enumerable.From(Items)
                 .Where(function(x){
-                    return x.type == ItemType.Armor || x.type == ItemType.Helmet || x.type == ItemType.Shield;
+                    return (x.type == ItemType.Armor || 
+                            x.type == ItemType.Helmet || 
+                            x.type == ItemType.Shield || 
+                            x.type == ItemType.Greaves)
+                            && x.canBeUsedBy(self.character());
                     }).ToArray();
         });        
         
@@ -99,13 +112,17 @@ function UtViewModel(){
         });
         
     self.addCharacter = function(){
-        var data = self.character;
+        var data = self.character();
         var character = new Character(
             ko.observable(data.name()),
             ko.observable(data.raceId()), 
             ko.observable(data.professionId()),
             self.costCalculationPolicy);
             
+        ko.utils.arrayForEach(data.equipment(), function(e){
+                character.equipment.push(e);
+            });    
+  
         self.team.characters.push(character);
     }
     

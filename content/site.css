@@ -29,7 +29,7 @@ div#content{
 }
 
 .sectionContent{
-    background-color: #EEE;
+    background-color: #FAFAFA;
     padding: 10px;
 }
 
@@ -90,6 +90,8 @@ table td, table th{
 
 #cart{
     width: 49%; 
-    float: right;
+    float: left;
     min-height: 200px;
 }
+
+

@@ -81,8 +81,9 @@ function _ItemType(){
     self.Helmet = 1;
     self.Armor = 2;
     self.Shield = 3;
-    self.MeleeWeapon = 4;
-    self.RangedWeapon = 5;
+    self.Greaves = 4;
+    self.MeleeWeapon = 5;
+    self.RangedWeapon = 6;
 }
 
 ItemType = new _ItemType();
@@ -106,6 +107,54 @@ ArmorClass = new _ArmorClass();
 function ArmorProperties(armorClass){
     var self = this;
     self.armorClass = armorClass;
+    self.canBeUsedBy = function(character){
+        
+        if (this.type == ItemType.Helmet &&
+        Enumerable.From(character.equipment())
+                            .Any(function(x){
+                                return x.type == ItemType.Helmet;
+                }))
+                {
+                    return false;
+                }
+                        
+        if (this.type == ItemType.Greaves &&
+        Enumerable.From(character.equipment())
+                            .Any(function(x){
+                                return x.type == ItemType.Greaves;
+                }))
+                {
+                    return false;
+                }
+
+        if (this.type == ItemType.Armor &&
+        Enumerable.From(character.equipment())
+                            .Any(function(x){
+                                return x.type == ItemType.Armor;
+                }))
+                {
+                    return false;
+                }
+
+        if (this.type == ItemType.Shield &&
+        Enumerable.From(character.equipment())
+                            .Any(function(x){
+                                return x.type == ItemType.Shield || 
+                                    (x.type == ItemType.MeleeWeapon && (x.isTwoHanded || x.isLight));
+                }))
+                {
+                    return false;
+                }                                                             
+        
+        if (this.armorClass == ArmorClass.Heavy){
+            var profession = professionById(character.professionId());
+            if (profession){
+                return profession.cost > 35;
+            }
+        }
+        
+        return true;
+    };
 }
 
 function MeleeWeaponProperties(normalAttackMod, strengthAttackMod, precisionAttackMod, counterAttack, isTwoHanded, isLight){
@@ -115,7 +164,28 @@ function MeleeWeaponProperties(normalAttackMod, strengthAttackMod, precisionAtta
     self.precisionAttackMod = precisionAttackMod;
     self.counterAttack = counterAttack;
     self.isTwoHanded = isTwoHanded;
-    self.isLight = isLight;                
+    self.isLight = isLight;
+    self.canBeUsedBy = function(character){
+        if (this.type == ItemType.MeleeWeapon &&
+        Enumerable.From(character.equipment())
+                            .Any(function(x){
+                                return x.type == ItemType.MeleeWeapon;
+                }))
+                {
+                    return false;
+                }
+        
+        if (this.isTwoHanded || this.isLight){
+            if (Enumerable.From(character.equipment())
+                            .Any(function(x){
+                                return x.type == ItemType.Shield;
+                })){
+                    return false;
+                }
+        }
+        
+        return true;
+    };                
 }
 
 function RangedWeaponProperties(dmg, range, isArmorPiercing){
@@ -123,6 +193,18 @@ function RangedWeaponProperties(dmg, range, isArmorPiercing){
     self.damage = dmg;
     self.range = range;
     self.isArmorPiercing = isArmorPiercing;
+    self.canBeUsedBy = function(character){
+        if (this.type == ItemType.RangedWeapon &&
+        Enumerable.From(character.equipment())
+                            .Any(function(x){
+                                return x.type == ItemType.RangedWeapon;
+                }))
+                {
+                    return false;
+                }
+                
+        return true;
+    };
 }
 
 Items = [
@@ -152,8 +234,8 @@ Items = [
     $.extend(new Item(21, "Hełm garnczkowy", ItemType.Helmet, 7), new ArmorProperties(ArmorClass.Heavy)),
     $.extend(new Item(22, "Koszulka kolcza", ItemType.Armor, 4), new ArmorProperties(ArmorClass.Light)),
     $.extend(new Item(23, "Napierśnik płytowy", ItemType.Armor, 7), new ArmorProperties(ArmorClass.Heavy)),
-    $.extend(new Item(24, "Nagolennik skórzany", ItemType.Armor, 4), new ArmorProperties(ArmorClass.Light)),
-    $.extend(new Item(25, "Nagolennik metalowy", ItemType.Armor, 7), new ArmorProperties(ArmorClass.Heavy)),
+    $.extend(new Item(24, "Nagolennik skórzany", ItemType.Greaves, 4), new ArmorProperties(ArmorClass.Light)),
+    $.extend(new Item(25, "Nagolennik metalowy", ItemType.Greaves, 7), new ArmorProperties(ArmorClass.Heavy)),
     $.extend(new Item(26, "Tarcza stalowa", ItemType.Shield, 10), new ArmorProperties(ArmorClass.Heavy)),
     $.extend(new Item(27, "Tarcza drewniana", ItemType.Shield, 3), new ArmorProperties(ArmorClass.Light)),
     
@@ -194,7 +276,7 @@ var CharacterCostCalculationPolicy = function(team){
     var self = this;
     self.team = team;
     self.calculate = function(character){
-        var baseCost = character.calculateBaseCost();
+        var baseCost = character.baseCost();
         var extraProfessionCost = self.team.getCharacterExtraCost(character);
         return baseCost + extraProfessionCost;
     }
@@ -206,9 +288,9 @@ var Character = function(name, raceId, professionId, costCalculationPolicy){
     self.raceId = raceId;
     self.professionId = professionId;
     self.costCalculationPolicy = costCalculationPolicy;
-    self.items = ko.observableArray();
+    self.equipment = ko.observableArray();
 
-    self.calculateBaseCost = function(){
+    self.baseCost = ko.computed(function(){
         var cost = 0;
         
         if (self.professionId()){
@@ -221,8 +303,12 @@ var Character = function(name, raceId, professionId, costCalculationPolicy){
             cost += race.cost;
         }
         
+        ko.utils.arrayForEach(self.equipment(), function(item){
+            cost += item.cost;
+        });
+                
         return cost;
-    }
+    });
 
     self.cost = ko.computed(function(){
             if (!self.costCalculationPolicy){
@@ -240,6 +326,14 @@ var Character = function(name, raceId, professionId, costCalculationPolicy){
     
     self.setCostCalculationPolicy = function(policy){
         self.costCalculationPolicy = policy;
+    }
+    
+    self.addItemToEquipment = function(item){
+        self.equipment.push(item);
+    }
+    
+    self.removeItemFromEquipment = function(item){
+        self.equipment.remove(item);
     }
 }
 

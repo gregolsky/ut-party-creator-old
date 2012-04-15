@@ -24,9 +24,9 @@
             configureEquipmentEditor();
             
             
-            var viewModel = new UtViewModel();
+            ViewModel = new UtViewModel();
             
-            ko.applyBindings(viewModel);
+            ko.applyBindings(ViewModel);
             
         });
     
@@ -72,8 +72,8 @@
                 </div>
                 <div class="sectionContent">
                     <div class="field">
-                        <label for="characterCost" >Koszt postaci</label>
-                        <span data-bind="text: character.cost" >
+                        <label for="characterCost" >Koszt postaci:</label>
+                        <span data-bind="text: character().cost()" >
                             
                         </span>
                     </div>
@@ -81,7 +81,7 @@
                         <label for="name" >
                             Imię:
                         </label>
-                        <input name="name" type="text" data-bind="value: character.name" required />       
+                        <input name="name" type="text" data-bind="value: character().name" required />       
                     </div>
                     <div class="field">
                         <label for="race" >
@@ -94,7 +94,7 @@
                                        optionsText: function(item){ 
                                            return item.name + ' (' + item.cost + 'p)'; 
                                         },
-                                       value: character.raceId" >
+                                       value: character().raceId" >
                         </select>   
                     </div>
                     
@@ -108,7 +108,7 @@
                                        optionsText: function(item){ 
                                            return item.name + ' (' + item.cost + 'p)'; 
                                         },
-                                       value: character.professionId">
+                                       value: character().professionId">
                         </select>      
                     </div>
                     
@@ -117,7 +117,7 @@
                     </div>
 
                     <div id="characterEqEditor" class="field" style="margin-left: 300px;" >
-                            <div id="eqItems" style="width: 50%; float: left;" >
+                            <div id="eqItems" style="width: 50%; float: right;" >
                                 
                                 <div class="ui-widget-header ui-corner-all" >Dostępne przedmioty</div>
                                 	
@@ -125,33 +125,33 @@
                                     
                                     <h3><a href="#">Broń biała</a></h3>
                                     <div>
-                                        <ul data-bind='template: { foreach: availableMeleeWeapons,
+                                        <ul data-bind='template: { foreach: availableMeleeWeapons(),
                                             afterRender: setDraggable }'>
                                             <li class="eqItem" >
                                                 <span data-bind="text: name + ' (' + cost + 'p)' "></span>
-                                                <span class='hidden' data-bind="text: id" ></span>
+                                                <span class='hidden itemId' data-bind="text: id" ></span>
                                             </li>
                                         </ul>
                                     </div>
                                     
                                     <h3><a href="#">Broń strzelecka</a></h3>
                                     <div>
-                                        <ul data-bind='template: { foreach: availableRangedWeapons,
+                                        <ul data-bind='template: { foreach: availableRangedWeapons(),
                                             afterRender: setDraggable }'>
                                             <li class="eqItem" >
                                                 <span data-bind="text: name + ' (' + cost + 'p)' "></span>
-                                                <span class='hidden' data-bind="text: id" ></span>
+                                                <span class='hidden itemId' data-bind="text: id" ></span>
                                             </li>
                                         </ul>
                                     </div>                                    
                                     
                                     <h3><a href="#">Pancerz</a></h3>
                                     <div>
-                                        <ul data-bind='template: { foreach: availableArmors,
+                                        <ul data-bind='template: { foreach: availableArmors(),
                                             afterRender: setDraggable }'>
                                             <li class="eqItem" >
                                                 <span data-bind="text: name + ' (' + cost + 'p)' "></span>
-                                                <span class='hidden' data-bind="text: id" ></span>
+                                                <span class='hidden itemId' data-bind="text: id" ></span>
                                             </li>
                                         </ul>
                                     </div>
@@ -197,6 +197,7 @@
                             <th>Imię</th>
                             <th>Rasa</th>
                             <th>Profesja</th>
+                            <th>Ekwipunek</th>
                             <th>Koszt</th>
                             <th>Akcja</th>
                         </tr>
@@ -206,7 +207,12 @@
                             <td data-bind="text: name()"></td>
                             <td data-bind="text: raceById(raceId()).name"></td>
                             <td data-bind="text: professionById(professionId()).name"></td>
-                            <td data-bind="text: cost"></td>
+                            <td>
+                                <ul data-bind="foreach: equipment">
+                                    <li data-bind="text: name"></li>
+                                </ul>
+                            </td>
+                            <td data-bind="text: cost()"></td>
                             <td>
                                 <a href='#' data-bind='click: $root.removeCharacter'>Usuń</a>
                             </td>               
