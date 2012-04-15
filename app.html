@@ -11,15 +11,18 @@
     <script type="text/javascript" src="scripts/additional-methods.min.js"></script>
     <script type="text/javascript" src="scripts/messages_pl.js"></script>
     <script type="text/javascript" src="scripts/knockout-2.0.0.js"></script>
+    <script type="text/javascript" src="scripts/linq.min.js"></script>
     <script type="text/javascript" src="scripts/ut.js"></script>
     <script type="text/javascript" src="scripts/ui.js"></script>
     
     <script type="text/javascript" >
+        
         $(function(){
-    
-            //configureValidation();
+            
             configureDynamicStyles();
-            configureTeamNatureSelect();
+            configureUi();
+            configureEquipmentEditor();
+            
             
             var viewModel = new UtViewModel();
             
@@ -54,7 +57,6 @@
                         </label>
 
                         <select name="teamNature" data-bind="value: team.nature" >
-                            <option></option>
                             <option value="D" >Dobry</option>
                             <option value="N" >Neutralny</option>
                             <option value="Z" >Zły</option>
@@ -64,7 +66,7 @@
                 </div>
             </div>
             
-            <div id="characterForm" class="section" style="display: none;" >
+            <div id="characterForm" class="section" >
                 <div class="sectionName">
                     Postać
                 </div>
@@ -90,7 +92,7 @@
                             data-bind="options: availableRaces,
                                        optionsValue: 'id',
                                        optionsText: function(item){ 
-                                           return item.name + ' (' + item.cost + 'p)' 
+                                           return item.name + ' (' + item.cost + 'p)'; 
                                         },
                                        value: character.raceId" >
                         </select>   
@@ -104,18 +106,83 @@
                             data-bind="options: availableProfessions,
                                        optionsValue: 'id',
                                        optionsText: function(item){ 
-                                           return item.name + ' (' + item.cost + 'p)' 
+                                           return item.name + ' (' + item.cost + 'p)'; 
                                         },
                                        value: character.professionId">
                         </select>      
                     </div>
+                    
+                    <div class="field">
+                        <label>Ekwipunek:</label>
+                    </div>
+
+                    <div id="characterEqEditor" class="field" style="margin-left: 300px;" >
+                            <div id="eqItems" style="width: 50%; float: left;" >
+                                
+                                <div class="ui-widget-header ui-corner-all" >Dostępne przedmioty</div>
+                                	
+                                <div id="availableItemsPanel">
+                                    
+                                    <h3><a href="#">Broń biała</a></h3>
+                                    <div>
+                                        <ul data-bind='template: { foreach: availableMeleeWeapons,
+                                            afterRender: setDraggable }'>
+                                            <li class="eqItem" >
+                                                <span data-bind="text: name + ' (' + cost + 'p)' "></span>
+                                                <span class='hidden' data-bind="text: id" ></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <h3><a href="#">Broń strzelecka</a></h3>
+                                    <div>
+                                        <ul data-bind='template: { foreach: availableRangedWeapons,
+                                            afterRender: setDraggable }'>
+                                            <li class="eqItem" >
+                                                <span data-bind="text: name + ' (' + cost + 'p)' "></span>
+                                                <span class='hidden' data-bind="text: id" ></span>
+                                            </li>
+                                        </ul>
+                                    </div>                                    
+                                    
+                                    <h3><a href="#">Pancerz</a></h3>
+                                    <div>
+                                        <ul data-bind='template: { foreach: availableArmors,
+                                            afterRender: setDraggable }'>
+                                            <li class="eqItem" >
+                                                <span data-bind="text: name + ' (' + cost + 'p)' "></span>
+                                                <span class='hidden' data-bind="text: id" ></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
+
+                            <div id="cart" >
+                                <div class="ui-widget-header ui-corner-all" style="margin-bottom: 1px;" >Ekwipunek postaci</div>
+                                <div class="ui-widget-content ui-corner-all">
+                                    <ul class="list">
+                                        <li class="placeholder eqItem">Dodaj przedmioty</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div style="clear: both;"/>
+                    </div>
+                    
+                    
                     <div class="field">
                         <label></label>
                         <input type="button" value="Dodaj postać" data-bind="click: addCharacter" />
                     </div>
                 </div>
+                
+                
+                
             </div>
-            
+
             <div id="teamCharacters" class="section" >
                 <div class="sectionName">
                     Skład drużyny

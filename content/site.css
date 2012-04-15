@@ -66,4 +66,30 @@ table td, table th{
     padding: 5px;
 }
 
+.ui-widget-header{
+    padding: 3px;
+}
 
+#characterEqEditor{
+    font-size: small;
+}
+
+.hidden{
+    display: none;
+}
+
+.eqItem{
+    width: 300px;
+    background: #eee;
+    list-style: none;
+    margin: 2px;
+    padding: 2px;
+    border: solid 1px Gray;
+    cursor: hand;
+}
+
+#cart{
+    width: 49%; 
+    float: right;
+    min-height: 200px;
+}

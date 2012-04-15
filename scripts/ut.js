@@ -206,6 +206,7 @@ var Character = function(name, raceId, professionId, costCalculationPolicy){
     self.raceId = raceId;
     self.professionId = professionId;
     self.costCalculationPolicy = costCalculationPolicy;
+    self.items = ko.observableArray();
 
     self.calculateBaseCost = function(){
         var cost = 0;
