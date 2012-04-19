@@ -1,35 +1,56 @@
 
-var Race = function(id, name, cost, availableNatures){
+var Attributes = function(
+    commandmentNumber, //ld
+    mobility,          //m
+    normalCombat,      //ws
+    strength,          //s
+    condition,         //sp
+    rangeWeapons,      //bs
+    toughness,         //t
+    vitality){         //w
+        var self = this;
+        self.commandmentNumber = commandmentNumber;
+        self.mobility = mobility;
+        self.normalCombat = normalCombat;
+        self.strength = strength;
+        self.condition = condition;
+        self.rangeWeapons = rangeWeapons;
+        self.toughness = toughness;
+        self.vitality = vitality;
+    }
+
+var Race = function(id, name, cost, availableNatures, attributes){
     var self = this;
     self.id = id;
     self.name = name;
     self.cost = cost;
     self.availableNatures = availableNatures;
+    self.attributes = attributes;
 }
 
 Races = [
-    new Race(1, "Elf leśny", 70, [ "D" ]),
-    new Race(2, "Elf wyniosły", 70, [ "N" ]),
-    new Race(3, "Elf dziki", 70, [ "N" ]),
-    new Race(4, "Elf ciemny", 70, [ "Z" ]),
+    new Race(1, "Elf leśny", 70, [ "D" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6)),
+    new Race(2, "Elf wyniosły", 70, [ "N" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6)),
+    new Race(3, "Elf dziki", 70, [ "N" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6)),
+    new Race(4, "Elf ciemny", 70, [ "Z" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6)),
     
-    new Race(5, "Krasnolud z Thargomind", 70, [ "N" ]),
-    new Race(6, "Krasnolud z Północy", 73, [ "Z" ]),
+    new Race(5, "Krasnolud z Thargomind", 70, [ "N" ], new Attributes(7, 15, 7, 8, 6, 7, 8, 8)),
+    new Race(6, "Krasnolud z Północy", 73, [ "Z" ], new Attributes(7, 15, 7, 8, 6, 7, 8, 8)),
     
-    new Race(7, "Człowiek", 50, [ "D", "N", "Z" ]),
+    new Race(7, "Człowiek", 50, [ "D", "N", "Z" ], new Attributes(7, 15, 7, 7, 7, 7, 7, 7)),
     
-    new Race(8, "Ork", 60, [ "N", "Z" ]),
+    new Race(8, "Ork", 60, [ "N", "Z" ], new Attributes(6, 15, 6, 8, 6, 6, 8, 7)),
     
-    new Race(9, "Niziołek Krótkin", 40, [ "D" ]),
-    new Race(10, "Niziołek Mrokin", 40, [ "Z" ]),
+    new Race(9, "Niziołek Krótkin", 40, [ "D" ], new Attributes(6, 20, 6, 6, 8, 7, 6, 5)),
+    new Race(10, "Niziołek Mrokin", 40, [ "Z" ], new Attributes(6, 20, 6, 6, 8, 7, 6, 5)),
     
-    new Race(11, "Goblin", 38, [ "N", "Z" ]),
-    new Race(12, "Hobgoblin", 45, [ "Z" ]),
-    new Race(13, "Gnom", 36, [ "D" ]),
-    new Race(14, "Półogr", 92, [ "D", "N" ]),
-    new Race(15, "Czarny ork", 79, [ "Z" ]),
-    new Race(16, "Tigerianin", 65, [ "D" ]),
-    new Race(17, "Vorak", 64, [ "N" ])
+    new Race(11, "Goblin", 38, [ "N", "Z" ], new Attributes(6, 20, 6, 6, 8, 7, 6, 5)),
+    new Race(12, "Hobgoblin", 45, [ "Z" ], new Attributes(6, 15, 6, 7, 7, 7, 6, 7)),
+    new Race(13, "Gnom", 36, [ "D" ], new Attributes(7, 15, 6, 6, 6, 8, 6, 7)),
+    new Race(14, "Półogr", 92, [ "D", "N" ], new Attributes(5, 10, 6, 9, 5, 5, 9, 9)),
+    new Race(15, "Czarny ork", 79, [ "Z" ], new Attributes(5, 10, 6, 9, 5, 5, 8, 8)),
+    new Race(16, "Tigerianin", 65, [ "D" ], new Attributes(6, 15, 6, 8, 8, 5, 7, 7)),
+    new Race(17, "Vorak", 64, [ "N" ], new Attributes(6, 15, 7, 7, 8, 6, 7, 8))
 ]
 
 var Profession = function(id, name, cost, onlyForHumans){
@@ -108,10 +129,9 @@ function ArmorProperties(armorClass){
     var self = this;
     self.armorClass = armorClass;
     self.canBeUsedBy = function(character){
-        
+        var eq = Enumerable.From(character.equipment());
         if (this.type == ItemType.Helmet &&
-        Enumerable.From(character.equipment())
-                            .Any(function(x){
+                eq.Any(function(x){
                                 return x.type == ItemType.Helmet;
                 }))
                 {
@@ -119,8 +139,7 @@ function ArmorProperties(armorClass){
                 }
                         
         if (this.type == ItemType.Greaves &&
-        Enumerable.From(character.equipment())
-                            .Any(function(x){
+                eq.Any(function(x){
                                 return x.type == ItemType.Greaves;
                 }))
                 {
@@ -128,8 +147,7 @@ function ArmorProperties(armorClass){
                 }
 
         if (this.type == ItemType.Armor &&
-        Enumerable.From(character.equipment())
-                            .Any(function(x){
+                eq.Any(function(x){
                                 return x.type == ItemType.Armor;
                 }))
                 {
@@ -137,11 +155,11 @@ function ArmorProperties(armorClass){
                 }
 
         if (this.type == ItemType.Shield &&
-        Enumerable.From(character.equipment())
-                            .Any(function(x){
+                (eq.Any(function(x){
                                 return x.type == ItemType.Shield || 
-                                    (x.type == ItemType.MeleeWeapon && (x.isTwoHanded || x.isLight));
-                }))
+                                      (x.type == ItemType.MeleeWeapon && (x.isTwoHanded || x.isLight));
+                }) || 
+                eq.Where(function(x){ return x.type == ItemType.MeleeWeapon; }).Count() > 1))
                 {
                     return false;
                 }                                                             
@@ -166,20 +184,18 @@ function MeleeWeaponProperties(normalAttackMod, strengthAttackMod, precisionAtta
     self.isTwoHanded = isTwoHanded;
     self.isLight = isLight;
     self.canBeUsedBy = function(character){
+        var eq = Enumerable.From(character.equipment());
         if (this.type == ItemType.MeleeWeapon &&
-        Enumerable.From(character.equipment())
-                            .Any(function(x){
-                                return x.type == ItemType.MeleeWeapon;
-                }))
+                (eq.Any(function(x){ return x.type == ItemType.MeleeWeapon && x.isTwoHanded; }) ||
+                eq.Where(function(x){ return x.type == ItemType.RangedWeapon || 
+                                             x.type == ItemType.MeleeWeapon || 
+                                             x.type == ItemType.Shield; }).Count() > 1))
                 {
                     return false;
                 }
         
         if (this.isTwoHanded || this.isLight){
-            if (Enumerable.From(character.equipment())
-                            .Any(function(x){
-                                return x.type == ItemType.Shield;
-                })){
+            if (eq.Any(function(x){ return x.type == ItemType.Shield; })){
                     return false;
                 }
         }
@@ -194,11 +210,10 @@ function RangedWeaponProperties(dmg, range, isArmorPiercing){
     self.range = range;
     self.isArmorPiercing = isArmorPiercing;
     self.canBeUsedBy = function(character){
+        var eq = Enumerable.From(character.equipment());
         if (this.type == ItemType.RangedWeapon &&
-        Enumerable.From(character.equipment())
-                            .Any(function(x){
-                                return x.type == ItemType.RangedWeapon;
-                }))
+             (eq.Any(function(x){ return x.type == ItemType.RangedWeapon; }) || 
+             eq.Where(function(x){ return x.type == ItemType.MeleeWeapon; }).Count() > 1))
                 {
                     return false;
                 }

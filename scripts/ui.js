@@ -23,15 +23,16 @@ var configureEquipmentEditor = function(){
             active: -1
         });
     
-    $( "#cart .list" ).droppable({
+    $( "#cart" ).droppable({
         activeClass: "ui-state-default",
         hoverClass: "ui-state-hover",
         accept: ":not(.ui-sortable-helper)",
         drop: function( event, ui ) {
+            var list = $(this).find("ul");
             var self = this;
             $(this).find( ".placeholder" ).remove();
             var item = $("<li class='eqItem' ></li>").html(ui.draggable.html());
-            item.appendTo(this);
+            item.appendTo(list);
             
             var eqItemId = item.children(".itemId").text();
             var eqItem = Enumerable.From(Items).Single(function(x){ return x.id == eqItemId; });
@@ -44,8 +45,8 @@ var configureEquipmentEditor = function(){
                 ViewModel.character().removeItemFromEquipment(eqItem);
                 item.remove();
                 
-                if ($(self).children('li').length == 0){
-                    $(self).append($('<li class="placeholder eqItem">Dodaj przedmioty</li>'));
+                if (list.children('li').length == 0){
+                    list.append($('<li class="placeholder eqItem">Dodaj przedmioty</li>'));
                 }  
             }).appendTo(item);
         }
