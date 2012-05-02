@@ -70,6 +70,7 @@
                 <div class="sectionName">
                     Postać
                 </div>
+                
                 <div class="sectionContent">
                     <div class="field">
                         <label for="characterCost" >Koszt postaci:</label>
@@ -110,6 +111,21 @@
                                         },
                                        value: character().professionId">
                         </select>      
+                    </div>
+                    
+                    <div class="field">
+                        <label for="attributes">Atrybuty:</label>
+                        <table style="width: 50%;" >
+                        <tr>
+                            <th>LD</th><td><span data-bind="text: raceById(character().raceId()).attributes.getCommand() " ></span></td></tr>
+                            <tr><th>M</th><td><span data-bind="text: raceById(character().raceId()).attributes.getMobility() " ></span></td></tr>
+                            <tr><th>WS</th><td><span data-bind="text: raceById(character().raceId()).attributes.getNormalCombat() " ></span></td></tr>
+                            <tr><th>S</th><td><span data-bind="text: raceById(character().raceId()).attributes.getStrength() " ></span></td></tr>
+                            <tr><th>SP</th><td><span data-bind="text: raceById(character().raceId()).attributes.getCondition() " ></span></td></tr>
+                            <tr><th>BS</th><td><span data-bind="text: raceById(character().raceId()).attributes.getRangeWeapons() " ></span></td></tr>
+                            <tr><th>T</th><td><span data-bind="text: raceById(character().raceId()).attributes.getToughness() " ></span></td></tr>
+                            <tr><th>W</th><td><span data-bind="text: raceById(character().raceId()).attributes.getVitality() " ></span></td></tr>
+                        </table>
                     </div>
                     
                     <div class="field">

@@ -60,6 +60,10 @@ var configureEquipmentEditor = function(){
     });
 }
 
+function getAttribute(attrs, getter){
+    return getter(attrs);
+}
+
 function UtViewModel(){
     var self = this;
 

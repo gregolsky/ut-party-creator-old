@@ -1,6 +1,6 @@
 
 var Attributes = function(
-    commandmentNumber, //ld
+    command, //ld
     mobility,          //m
     normalCombat,      //ws
     strength,          //s
@@ -9,7 +9,7 @@ var Attributes = function(
     toughness,         //t
     vitality){         //w
         var self = this;
-        self.commandmentNumber = commandmentNumber;
+        self.command = command;
         self.mobility = mobility;
         self.normalCombat = normalCombat;
         self.strength = strength;
@@ -17,6 +17,15 @@ var Attributes = function(
         self.rangeWeapons = rangeWeapons;
         self.toughness = toughness;
         self.vitality = vitality;
+        
+        self.getCommand = function(){ return self.command; };
+        self.getMobility = function(){ return self.mobility; };
+        self.getNormalCombat = function(){ return self.normalCombat; };
+        self.getStrength = function(){ return self.strength; };
+        self.getCondition = function(){ return self.condition; };
+        self.getRangeWeapons = function(){ return self.rangeWeapons; };
+        self.getToughness = function(){ return self.toughness; };
+        self.getVitality = function(){ return self.vitality; };
     }
 
 var Race = function(id, name, cost, availableNatures, attributes){
