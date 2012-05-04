@@ -106,4 +106,79 @@ table.attributesTable span, table.attributesTable td, table.attributesTable th {
     margin-left: 305px;
 }
 
+.characterSheetPrint{
+    background-image: url('images/form.jpg');
+    width: 654px;
+    height: 239px;
+    font-size: 65%;
+}
 
+.characterNamePrint{
+    position: relative;
+    top: 48px;
+    left: 39px;
+    width: 100px;
+}
+
+.characterRacePrint{
+    position: relative;
+    top: 73px;
+    left: 39px;
+    width: 120px;
+}
+
+.characterProfessionPrint{
+    position: relative;
+    top: 95px;
+    left: 39px;
+    width: 120px;
+}
+
+.characterLdPrint{
+    position: relative;
+    top: 120px;
+    left: 17px;
+    width: 20px;
+ }
+.characterMPrint{
+    position: relative;
+    top: 120px;
+    left: 50px;
+    width: 20px;
+ }
+.characterWsPrint{
+    position: relative;
+    top: 117px;
+    left: 85px;
+    width: 20px;   
+ }
+.characterSPrint{
+    position: relative;
+    top: 112px;
+    left: 115px;
+    width: 20px; 
+ }
+.characterSpPrint{
+    position: relative;
+    top: 105px;
+    left: 150px;
+    width: 20px; 
+ }
+.characterBsPrint{
+    position: relative;
+    top: 97px;
+    left: 185px;
+    width: 20px;     
+ }
+.characterTPrint{
+    position: relative;
+    top: 85px;
+    left: 225px;
+    width: 20px;     
+ }
+.characterWPrint{ 
+    position: relative;
+    top: 72px;
+    left: 258px;
+    width: 20px;  
+}
