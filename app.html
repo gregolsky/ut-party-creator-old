@@ -15,6 +15,22 @@
     <script type="text/javascript" src="scripts/ut.js"></script>
     <script type="text/javascript" src="scripts/ui.js"></script>
     
+    <script type="text/html" id="attributes-template" >
+        <table class="attributesTable" >
+            <tr><th>LD</th><th>M</th><th>WS</th><th>S</th><th>SP</th><th>BS</th><th>T</th><th>W</th></tr>
+            <tr>
+                <td><span data-bind="text: getCommand() " ></span></td>
+                <td><span data-bind="text: getMobility() " ></span></td>
+                <td><span data-bind="text: getNormalCombat() " ></span></td>
+                <td><span data-bind="text: getStrength() " ></span></td>
+                <td><span data-bind="text: getCondition() " ></span></td>
+                <td><span data-bind="text: getRangeWeapons() " ></span></td>
+                <td><span data-bind="text: getToughness() " ></span></td>
+                <td><span data-bind="text: getVitality() " ></span></td>
+            </tr>
+        </table>
+    </script>
+    
     <script type="text/javascript" >
         
         $(function(){
@@ -100,6 +116,11 @@
                     </div>
                     
                     <div class="field">
+                        <label for="attributes">Atrybuty:</label>
+                        <div class="labelMargin" data-bind="template: { name: 'attributes-template',  data: raceById(character().raceId()).attributes }"></div>
+                    </div>
+                    
+                    <div class="field">
                         <label for="profession" >
                             Profesja:
                         </label>
@@ -112,27 +133,12 @@
                                        value: character().professionId">
                         </select>      
                     </div>
-                    
-                    <div class="field">
-                        <label for="attributes">Atrybuty:</label>
-                        <table style="width: 50%;" >
-                        <tr>
-                            <th>LD</th><td><span data-bind="text: raceById(character().raceId()).attributes.getCommand() " ></span></td></tr>
-                            <tr><th>M</th><td><span data-bind="text: raceById(character().raceId()).attributes.getMobility() " ></span></td></tr>
-                            <tr><th>WS</th><td><span data-bind="text: raceById(character().raceId()).attributes.getNormalCombat() " ></span></td></tr>
-                            <tr><th>S</th><td><span data-bind="text: raceById(character().raceId()).attributes.getStrength() " ></span></td></tr>
-                            <tr><th>SP</th><td><span data-bind="text: raceById(character().raceId()).attributes.getCondition() " ></span></td></tr>
-                            <tr><th>BS</th><td><span data-bind="text: raceById(character().raceId()).attributes.getRangeWeapons() " ></span></td></tr>
-                            <tr><th>T</th><td><span data-bind="text: raceById(character().raceId()).attributes.getToughness() " ></span></td></tr>
-                            <tr><th>W</th><td><span data-bind="text: raceById(character().raceId()).attributes.getVitality() " ></span></td></tr>
-                        </table>
-                    </div>
-                    
+                                        
                     <div class="field">
                         <label>Ekwipunek:</label>
                     </div>
 
-                    <div id="characterEqEditor" class="field" style="margin-left: 300px;" >
+                    <div id="characterEqEditor" class="field labelMargin" >
                             <div id="eqItems" style="width: 50%; float: right;" >
                                 
                                 <div class="ui-widget-header ui-corner-all" >Dostępne przedmioty</div>
@@ -187,16 +193,12 @@
                             
                             <div style="clear: both;"/>
                     </div>
-                    
-                    
+
                     <div class="field">
                         <label></label>
                         <input type="button" value="Dodaj postać" data-bind="click: addCharacter" />
                     </div>
-                </div>
-                
-                
-                
+                </div>               
             </div>
 
             <div id="teamCharacters" class="section" >
@@ -207,7 +209,7 @@
                     <label>Pozostała liczba punktów:</label>
                     <span data-bind="text: pointsAvailable" ></span>
                 </div>
-                <table>
+                <table id="teamCharactersTable" >
                     <thead>
                         <tr>
                             <th>Imię</th>
