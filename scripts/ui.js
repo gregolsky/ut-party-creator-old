@@ -65,12 +65,31 @@ function getAttribute(attrs, getter){
 }
 
 function printTeamCharacterSheets(){
-    $("#teamCharactersSheets").html2canvas({
-        flashcanvas: "./external/flashcanvas.min.js",
-        logging: true,
-        profile: true,
-        useCORS: true
-    });
+    
+    //if (!ViewModel || !ViewModel.team || ViewModel.team.characters().length == 0){
+    //    return;
+    //}
+    
+    //var characters = ViewModel.team.characters();
+    var characters = [ 'a' ]; 
+    var sheetWidth = 654;
+    var sheetHeight = 239;
+    
+    var canvas = document.getElementById("charactersCanvas");
+    $(canvas).attr("width", sheetWidth).attr("height", 239 * characters.length);
+    
+    var sheetImage = new Image();
+    sheetImage.src = './content/images/form.jpg';
+    
+    var context = canvas.getContext("2d");
+    for (var i = 0; i < characters.length; i++){
+        var sx = i * sheetWidth;
+        var sy = i * sheetHeight;
+        context.drawImage(sheetImage, 0, sy);
+        //context.fillText(characters[i].name(), 39, sy + 55);
+        context.fillText("Zbyszko z Bogdańca", 39, sy + 60);
+    }
+    
 }
 
 function UtViewModel(){
