@@ -28,82 +28,84 @@ var Attributes = function(
         self.getVitality = function(){ return self.vitality; };
     }
 
-var Race = function(id, name, cost, availableNatures, attributes){
+var Race = function(id, name, cost, availableNatures, attributes, talent){
     var self = this;
     self.id = id;
     self.name = name;
     self.cost = cost;
     self.availableNatures = availableNatures;
     self.attributes = attributes;
+    self.talent = talent
 }
 
 Races = [
-    new Race(1, "Elf leśny", 70, [ "D" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6)),
-    new Race(2, "Elf wyniosły", 70, [ "N" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6)),
-    new Race(3, "Elf dziki", 70, [ "N" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6)),
-    new Race(4, "Elf ciemny", 70, [ "Z" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6)),
+    new Race(1, "Elf leśny", 70, [ "D" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6), "Doskok"),
+    new Race(2, "Elf wyniosły", 70, [ "N" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6), "Doskok"),
+    new Race(3, "Elf dziki", 70, [ "N" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6), "Doskok"),
+    new Race(4, "Elf ciemny", 70, [ "Z" ], new Attributes(7, 15, 7, 7, 8, 8, 7, 6), "Doskok"),
     
-    new Race(5, "Krasnolud z Thargomind", 70, [ "N" ], new Attributes(7, 15, 7, 8, 6, 7, 8, 8)),
-    new Race(6, "Krasnolud z Północy", 73, [ "Z" ], new Attributes(7, 15, 7, 8, 6, 7, 8, 8)),
+    new Race(5, "Krasnolud z Thargomind", 70, [ "N" ], new Attributes(7, 15, 7, 8, 6, 7, 8, 8), "Ogłuszanie"),
+    new Race(6, "Krasnolud z Północy", 73, [ "Z" ], new Attributes(7, 15, 7, 8, 6, 7, 8, 8), "Ogłuszanie"),
     
-    new Race(7, "Człowiek", 50, [ "D", "N", "Z" ], new Attributes(7, 15, 7, 7, 7, 7, 7, 7)),
+    new Race(7, "Człowiek", 50, [ "D", "N", "Z" ], new Attributes(7, 15, 7, 7, 7, 7, 7, 7), "Instynkt obronny"),
     
-    new Race(8, "Ork", 60, [ "N", "Z" ], new Attributes(6, 15, 6, 8, 6, 6, 8, 7)),
+    new Race(8, "Ork", 60, [ "N", "Z" ], new Attributes(6, 15, 6, 8, 6, 6, 8, 7), "Brutalność"),
     
-    new Race(9, "Niziołek Krótkin", 40, [ "D" ], new Attributes(6, 20, 6, 6, 8, 7, 6, 5)),
-    new Race(10, "Niziołek Mrokin", 40, [ "Z" ], new Attributes(6, 20, 6, 6, 8, 7, 6, 5)),
+    new Race(9, "Niziołek Krótkin", 40, [ "D" ], new Attributes(6, 20, 6, 6, 8, 7, 6, 5), "Braterstwo"),
+    new Race(10, "Niziołek Mrokin", 40, [ "Z" ], new Attributes(6, 20, 6, 6, 8, 7, 6, 5), "Braterstwo"),
     
-    new Race(11, "Goblin", 38, [ "N", "Z" ], new Attributes(6, 20, 6, 6, 8, 7, 6, 5)),
-    new Race(12, "Hobgoblin", 45, [ "Z" ], new Attributes(6, 15, 6, 7, 7, 7, 6, 7)),
-    new Race(13, "Gnom", 36, [ "D" ], new Attributes(7, 15, 6, 6, 6, 8, 6, 7)),
-    new Race(14, "Półogr", 92, [ "D", "N" ], new Attributes(5, 10, 6, 9, 5, 5, 9, 9)),
-    new Race(15, "Czarny ork", 79, [ "Z" ], new Attributes(5, 10, 6, 9, 5, 5, 8, 8)),
-    new Race(16, "Tigerianin", 65, [ "D" ], new Attributes(6, 15, 6, 8, 8, 5, 7, 7)),
-    new Race(17, "Vorak", 64, [ "N" ], new Attributes(6, 15, 7, 7, 8, 6, 7, 8))
+    new Race(11, "Goblin", 38, [ "N", "Z" ], new Attributes(6, 20, 6, 6, 8, 7, 6, 5), "Żywotność"),
+    new Race(12, "Hobgoblin", 45, [ "Z" ], new Attributes(6, 15, 6, 7, 7, 7, 6, 7), "Przeznaczenie"),
+    new Race(13, "Gnom", 36, [ "D" ], new Attributes(7, 15, 6, 6, 6, 8, 6, 7), "Wrodzona moc"),
+    new Race(14, "Półogr", 92, [ "D", "N" ], new Attributes(5, 10, 6, 9, 5, 5, 9, 9), "Twarda skóra"),
+    new Race(15, "Czarny ork", 79, [ "Z" ], new Attributes(5, 10, 6, 9, 5, 5, 8, 8), "Atak paszczą"),
+    new Race(16, "Tigerianin", 65, [ "D" ], new Attributes(6, 15, 6, 8, 8, 5, 7, 7), "Powalenie"),
+    new Race(17, "Vorak", 64, [ "N" ], new Attributes(6, 15, 7, 7, 8, 6, 7, 8), "Podstępny cios")
 ]
 
-var Profession = function(id, name, cost, onlyForHumans){
+var Profession = function(id, name, cost, talent, onlyForHumans){
     var self = this;
     self.id = id;
     self.name = name;
     self.cost = cost
+    self.talent = talent;
     self.onlyForHumans = onlyForHumans;
 }
 
 Professions = [
-  new Profession(1, "Herszt", 70),
-  new Profession(2, "Bard", 32),
-  new Profession(3, "Szermierz", 40),
-  new Profession(4, "Barbarzyńca", 36),
-  new Profession(5, "Zbrojny", 38),
-  new Profession(6, "Strzelec", 26),
-  new Profession(7, "Zabójca", 44),
-  new Profession(8, "Banita", 20),
-  new Profession(9, "Łapserdak", 12),
-  new Profession(10, "Palladyn", 65, true),
-  new Profession(11, "Rycerz zakonny", 65, true),
-  new Profession(12, "Czarny rycerz", 65, true),
-  new Profession(13, "Szampierz", 39),
-  new Profession(14, "Zwiadowca", 28),
-  new Profession(15, "Tropiciel", 32),
-  new Profession(16, "Berserker", 40),
-  new Profession(17, "Giermek", 18),
-  new Profession(18, "Złodziej", 16),
-  new Profession(19, "Nożownik", 26),
-  new Profession(20, "Hiena cmentarna", 16),
-  new Profession(21, "Łowca nagród", 50),
-  new Profession(22, "Mnich", 16),
-  new Profession(23, "Strażnik dróg", 16),
-  new Profession(24, "Rozbójnik", 25),
-  new Profession(25, "Gladiator", 36),
-  new Profession(26, "Mistrz miecza", 47),
-  new Profession(27, "Zwadźca", 38),
-  new Profession(28, "Czarodziej", 66),
-  new Profession(29, "Kleryk", 60),
-  new Profession(30, "Kapłan", 74),
-  new Profession(31, "Druid", 63),
-  new Profession(32, "Szaman", 62),
-  new Profession(33, "Alchemik", 64)
+  new Profession(1, "Herszt", 70, "Wydawanie rozkazów"),
+  new Profession(2, "Bard", 32, "Poetyckie kroniki"),
+  new Profession(3, "Szermierz", 40, "Dwie bronie"),
+  new Profession(4, "Barbarzyńca", 36, "Krzepa"),
+  new Profession(5, "Zbrojny", 38, "Opancerzenie"),
+  new Profession(6, "Strzelec", 26, "Strzał w ruchu"),
+  new Profession(7, "Zabójca", 44, "Perfekcyjny atak"),
+  new Profession(8, "Banita", 20, "Ucieczka"),
+  new Profession(9, "Łapserdak", 12, ""),
+  new Profession(10, "Palladyn", 65, "Aura inspiracji", true),
+  new Profession(11, "Rycerz zakonny", 65, "Zakonna determinacja", true),
+  new Profession(12, "Czarny rycerz", 65, "Aura śmierci", true),
+  new Profession(13, "Szampierz", 39, "Zamaszyste cięcie"),
+  new Profession(14, "Zwiadowca", 28, "Skradanie"),
+  new Profession(15, "Tropiciel", 32, "Znawca tropów"),
+  new Profession(16, "Berserker", 40, "Furia"),
+  new Profession(17, "Giermek", 18, "Odwrócenie uwagi"),
+  new Profession(18, "Złodziej", 16, "Doliniarstwo"),
+  new Profession(19, "Nożownik", 26, "Zasztyletowanie"),
+  new Profession(20, "Hiena cmentarna", 16, "Znawca nekropolii"),
+  new Profession(21, "Łowca nagród", 50, "Wielka szansa"),
+  new Profession(22, "Mnich", 16, "Znawca świątyń"),
+  new Profession(23, "Strażnik dróg", 16, "Terenoznawstwo"),
+  new Profession(24, "Rozbójnik", 25, "Atak z zaskoczenia"),
+  new Profession(25, "Gladiator", 36, "Słaby punkt"),
+  new Profession(26, "Mistrz miecza", 47, "Perfekcja"),
+  new Profession(27, "Zwadźca", 38, "Zastawa"),
+  new Profession(28, "Czarodziej", 66, "Rzucanie czarów"),
+  new Profession(29, "Kleryk", 60, "Modlitwy"),
+  new Profession(30, "Kapłan", 74, "Święta walka"),
+  new Profession(31, "Druid", 63, "Magiczny menhir"),
+  new Profession(32, "Szaman", 62, "Rytuał"),
+  new Profession(33, "Alchemik", 64, "Eliksiry")
 ]
 
 function _ItemType(){
@@ -359,6 +361,28 @@ var Character = function(name, raceId, professionId, costCalculationPolicy){
     self.removeItemFromEquipment = function(item){
         self.equipment.remove(item);
     }
+    
+    self.weaponsEq = ko.computed(function(){
+        return Enumerable.From(self.equipment())
+            .Where(
+                function(x)
+                { 
+                    return x.type == ItemType.MeleeWeapon ||
+                           x.type == ItemType.RangedWeapon;
+                }).ToArray();
+        });
+        
+    self.armorEq = ko.computed(function(){
+        return Enumerable.From(self.equipment())
+        .Where(
+            function(x)
+            { 
+                return x.type == ItemType.Helmet ||
+                       x.type == ItemType.Armor ||
+                       x.type == ItemType.Shield ||
+                       x.type == ItemType.Greaves;
+            }).ToArray();
+        });        
 }
 
 var Team = function(points, nature){

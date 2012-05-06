@@ -9,6 +9,8 @@
     <script type="text/javascript" src="scripts/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="scripts/jquery-ui-1.8.18.custom.min.js"></script>
     <script type="text/javascript" src="scripts/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="scripts/html2canvas.js"></script>
+    <script type="text/javascript" src="scripts/jquery.plugin.html2canvas.js"></script>
     <script type="text/javascript" src="scripts/additional-methods.min.js"></script>
     <script type="text/javascript" src="scripts/messages_pl.js"></script>
     <script type="text/javascript" src="scripts/knockout-2.0.0.js"></script>
@@ -30,6 +32,32 @@
                 <td><span data-bind="text: getVitality() " ></span></td>
             </tr>
         </table>
+    </script>
+    
+    <script type='text/html' id='characterSheet-template'>
+        <div class="characterSheetPrint" >
+            <div data-bind="text: name " class="characterNamePrint" ></div>
+            <div data-bind="text: raceById(raceId()).name " class="characterRacePrint" >Niziołek Krótkin</div>
+            <div data-bind="text: professionById(professionId()).name" class="characterProfessionPrint" ></div>
+            <div data-bind="text: raceById(raceId()).attributes.getCommand()" class="characterLdPrint characterAttrPrint" ></div>
+            <div data-bind="text: raceById(raceId()).attributes.getMobility()" class="characterMPrint characterAttrPrint" ></div>
+            <div data-bind="text: raceById(raceId()).attributes.getNormalCombat()" class="characterWsPrint characterAttrPrint" ></div>
+            <div data-bind="text: raceById(raceId()).attributes.getStrength()" class="characterSPrint characterAttrPrint" ></div>
+            <div data-bind="text: raceById(raceId()).attributes.getCondition()" class="characterSpPrint characterAttrPrint" ></div>
+            <div data-bind="text: raceById(raceId()).attributes.getRangeWeapons()" class="characterBsPrint characterAttrPrint" ></div>
+            <div data-bind="text: raceById(raceId()).attributes.getToughness()" class="characterTPrint characterAttrPrint" ></div>
+            <div data-bind="text: raceById(raceId()).attributes.getVitality()" class="characterWPrint characterAttrPrint" ></div>
+            
+            <div data-bind="foreach: weaponsEq" class="characterWeaponsPrint">
+                <span class="weaponPrint itemPrint" data-bind="text: name"></span>
+            </div>
+            <div data-bind="foreach: armorEq" class="characterArmorPrint">
+                <span class="armorPrint itemPrint" data-bind="text: name"></span>
+            </div>
+            
+            <div data-bind="text: raceById(raceId()).talent" class="characterRaceTalentPrint"></div>
+            <div data-bind="text: professionById(professionId()).talent" class="characterProfessionTalentPrint"></div>
+        </div>
     </script>
     
     <script type="text/javascript" >
@@ -238,22 +266,16 @@
                         </tr>
                     </tbody>
                 </table>
+                <div style='text-align: right;' >
+                    <input style="margin: 10px; margin-right: 130px;" type="button" value="Drukuj drużynę!" onclick="printTeamCharacterSheets(); return false;" />
+                </div>
             </div>
             
         </form>
         
-        <div class="characterSheetPrint" >
-            <div class="characterNamePrint" >Zbigniew</div>
-            <div class="characterRacePrint" >Niziołek Krótkin</div>
-            <div class="characterProfessionPrint" >Herszt</div>
-            <div class="characterLdPrint" >10</div>
-            <div class="characterMPrint" >10</div>
-            <div class="characterWsPrint" >10</div>
-            <div class="characterSPrint" >10</div>
-            <div class="characterSpPrint" >10</div>
-            <div class="characterBsPrint" >10</div>
-            <div class="characterTPrint" >10</div>
-            <div class="characterWPrint" >10</div>
+        <div id="teamCharactersSheets" data-bind="foreach: team.characters">
+            <div data-bind="template: { name: 'characterSheet-template', data: $data }" >
+            </div>
         </div>
         
     </div>

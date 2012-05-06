@@ -64,6 +64,15 @@ function getAttribute(attrs, getter){
     return getter(attrs);
 }
 
+function printTeamCharacterSheets(){
+    $("#teamCharactersSheets").html2canvas({
+        flashcanvas: "./external/flashcanvas.min.js",
+        logging: true,
+        profile: true,
+        useCORS: true
+    });
+}
+
 function UtViewModel(){
     var self = this;
 

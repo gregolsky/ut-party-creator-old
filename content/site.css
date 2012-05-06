@@ -1,184 +1,238 @@
 
-body{
-    background-color: #AAA;
-    font-size: large;
-    font-family: Verdana;
-    color: Black;
+    body{
+        background-color: #AAA;
+        font-size: large;
+        font-family: Verdana;
+        color: Black;
+    }
+
+    h2{
+        font-family: Arial;
+        margin: 5px;
+    }
+
+    div#content{
+        background-color: White;
+        margin: 10px auto 10px auto;
+        padding: 10px;
+        width: 70%;
+        min-height: 700px;
+    }
+
+    .section{
+        margin: 10px 5px 10px 5px;
+    }
+
+    .sectionName{
+        margin: 5px 0px 10px 5px;
+        font-weight: bold;
+    }
+
+    .sectionContent{
+        background-color: #FAFAFA;
+        padding: 10px;
+    }
+
+    .error{
+        color: Red;
+        font-size: small;
+        margin-left: 5px;
+    }
+
+    .field{
+        margin: 5px 5px 5px 0px;
+    }
+
+    input, select {
+        padding: 5px;
+    }
+
+    label{
+        display: inline-block;
+        width: 300px;
+        text-align: right;
+    }
+
+    table{
+        border: solid 1px Gray;
+        border-collapse:collapse;
+    }
+
+    table td, table th{
+        border: solid 1px Gray;
+        text-align: left;
+        padding: 5px;
+    }
+
+    table#teamCharactersTable
+    {
+        margin: auto;
+        width: 80%; 
+    }
+
+    table.attributesTable span, table.attributesTable td, table.attributesTable th {
+        width: 40px;
+        text-align: center;
+    }
+
+    .ui-widget-header{
+        padding: 3px;
+    }
+
+    #characterEqEditor{
+        font-size: small;
+    }
+
+    .hidden{
+        display: none;
+    }
+
+    .eqItem{
+        width: 300px;
+        background: #eee;
+        list-style: none;
+        margin: 2px;
+        padding: 2px;
+        border: solid 1px Gray;
+        cursor: hand;
+    }
+
+    #cart{
+        width: 49%; 
+        float: left;
+    }
+
+    .labelMargin{
+        margin-left: 305px;
+    }
+
+@media screen{
+
+    /*
+    .characterSheetPrint{
+        display: none;
+    }
+    */
+    
+    .characterSheetPrint{
+        background-image: url('images/form.jpg');
+        width: 654px;
+        height: 239px;
+        font-size: 65%;
+        position: relative;
+    } 
 }
 
-h2{
-    font-family: Arial;
-    margin: 5px;
-}
 
-div#content{
-    background-color: White;
-    margin: 10px auto 10px auto;
-    padding: 10px;
-    width: 70%;
-    min-height: 700px;
-}
-
-.section{
-    margin: 10px 5px 10px 5px;
-}
-
-.sectionName{
-    margin: 5px 0px 10px 5px;
-    font-weight: bold;
-}
-
-.sectionContent{
-    background-color: #FAFAFA;
-    padding: 10px;
-}
-
-.error{
-    color: Red;
-    font-size: small;
-    margin-left: 5px;
-}
-
-.field{
-    margin: 5px 5px 5px 0px;
-}
-
-input, select {
-    padding: 5px;
-}
-
-label{
-    display: inline-block;
-    width: 300px;
-    text-align: right;
-}
-
-table{
-    border: solid 1px Gray;
-    border-collapse:collapse;
-}
-
-table td, table th{
-    border: solid 1px Gray;
-    text-align: left;
-    padding: 5px;
-}
-
-table#teamCharactersTable
-{
-    margin: auto;
-    width: 80%; 
-}
-
-table.attributesTable span, table.attributesTable td, table.attributesTable th {
-    width: 40px;
-    text-align: center;
-}
-
-.ui-widget-header{
-    padding: 3px;
-}
-
-#characterEqEditor{
-    font-size: small;
-}
-
-.hidden{
-    display: none;
-}
-
-.eqItem{
-    width: 300px;
-    background: #eee;
-    list-style: none;
-    margin: 2px;
-    padding: 2px;
-    border: solid 1px Gray;
-    cursor: hand;
-}
-
-#cart{
-    width: 49%; 
-    float: left;
-}
-
-.labelMargin{
-    margin-left: 305px;
-}
-
-.characterSheetPrint{
-    background-image: url('images/form.jpg');
-    width: 654px;
-    height: 239px;
-    font-size: 65%;
+@media print{
+    .characterSheetPrint{
+        background-image: url('images/form.jpg');
+        width: 654px;
+        height: 239px;
+        font-size: 65%;
+        position: relative;
+    }
 }
 
 .characterNamePrint{
-    position: relative;
-    top: 48px;
+    position: absolute;
+    top: 49px;
     left: 39px;
     width: 100px;
 }
 
 .characterRacePrint{
-    position: relative;
-    top: 73px;
+    position: absolute;
+    top: 85px;
     left: 39px;
     width: 120px;
 }
 
 .characterProfessionPrint{
-    position: relative;
-    top: 95px;
+    position: absolute;
+    top: 120px;
     left: 39px;
-    width: 120px;
+    width: 130px;
+}
+
+.characterAttrPrint{
+    position: absolute;
+    width: 15px;
+    text-align:center;
 }
 
 .characterLdPrint{
-    position: relative;
-    top: 120px;
+    top: 155px;
     left: 17px;
-    width: 20px;
  }
 .characterMPrint{
-    position: relative;
-    top: 120px;
+    top: 165px;
     left: 50px;
-    width: 20px;
  }
 .characterWsPrint{
-    position: relative;
-    top: 117px;
+    top: 175px;
     left: 85px;
-    width: 20px;   
  }
 .characterSPrint{
-    position: relative;
-    top: 112px;
+    top: 182px;
     left: 115px;
-    width: 20px; 
  }
 .characterSpPrint{
-    position: relative;
-    top: 105px;
+    top: 190px;
     left: 150px;
-    width: 20px; 
  }
 .characterBsPrint{
-    position: relative;
-    top: 97px;
+    top: 193px;
     left: 185px;
-    width: 20px;     
  }
+ 
 .characterTPrint{
-    position: relative;
-    top: 85px;
-    left: 225px;
-    width: 20px;     
+    top: 195px;
+    left: 225px; 
  }
 .characterWPrint{ 
-    position: relative;
-    top: 72px;
+    top: 195px;
     left: 258px;
-    width: 20px;  
 }
+
+.characterWeaponsPrint{
+    position: absolute;
+    top: 36px;
+    left: 395px;
+    width: 190px;
+    height: 3em;
+    font-size: 90%;
+}
+
+.characterArmorPrint{
+    position: absolute;
+    top: 82px;
+    left: 395px;
+    width: 190px;
+    height: 3em;
+    font-size: 90%;
+}
+
+.characterRaceTalentPrint{
+    position: absolute;
+    top: 35px;
+    left: 220px;
+    width: 150px;
+    height: 2em;
+}
+
+.characterProfessionTalentPrint{
+    position: absolute;
+    top: 90px;
+    left: 220px;
+    width: 150px;
+    height: 2em;
+}
+
+.itemPrint{
+    display: inline-block;
+    padding: 1px;
+    border: 1px #AAA solid;
+    margin: 1px;
+}
+
