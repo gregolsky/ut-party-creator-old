@@ -64,6 +64,39 @@ function getAttribute(attrs, getter){
     return getter(attrs);
 }
 
+function CharacterSheetCanvas(character, context, sheetImg, nr){
+    var self = this;
+    self.character = character;
+    self.context = context;
+    self.sheetImg = sheetImg;
+    self.sy = nr * self.sheetImg.height;
+    
+    self.fillText = function(text, x, y){
+        self.context.fillText(text, x, y + self.sy);
+    };
+    
+    self.draw = function(){
+        self.context.drawImage(self.sheetImg, 0, self.sy, self.sheetImg.width, self.sheetImg.height);
+        self.fillText("name", 42, 55);
+        self.fillText("race", 42, 90);
+        self.fillText("prof", 42, 130);
+        self.fillText("ld", 20, 167);
+        self.fillText("m", 39, 55);
+        self.fillText("ws", 39, 55);                        
+        self.fillText("s", 42, 55);
+        self.fillText("sp", 42, 55);
+        self.fillText("bs", 42, 90);
+        self.fillText("t", 39, 55);
+        self.fillText("w", 39, 55);
+        self.fillText("zdolnosc rasy", 39, 55);
+        self.fillText("zdolnosc profesji", 39, 55);                        
+        self.fillText("bron", 42, 90);
+        self.fillText("pancerz", 39, 55);
+        self.fillText("ekwipunek", 39, 55);
+        self.fillText("koszt", 39, 55);
+    };
+}
+
 function printTeamCharacterSheets(){
     
     //if (!ViewModel || !ViewModel.team || ViewModel.team.characters().length == 0){
@@ -71,7 +104,7 @@ function printTeamCharacterSheets(){
     //}
     
     //var characters = ViewModel.team.characters();
-    var characters = [ 'a' ]; 
+    var characters = [ 'a', 'a' ]; 
     var sheetWidth = 654;
     var sheetHeight = 239;
     
@@ -79,15 +112,12 @@ function printTeamCharacterSheets(){
     $(canvas).attr("width", sheetWidth).attr("height", 239 * characters.length);
     
     var sheetImage = new Image();
-    sheetImage.src = './content/images/form.jpg';
+    sheetImage.src = $("input[name=formImageData]").val();
     
     var context = canvas.getContext("2d");
     for (var i = 0; i < characters.length; i++){
-        var sx = i * sheetWidth;
-        var sy = i * sheetHeight;
-        context.drawImage(sheetImage, 0, sy);
-        //context.fillText(characters[i].name(), 39, sy + 55);
-        context.fillText("Zbyszko z Bogdańca", 39, sy + 60);
+        var charCanv = new CharacterSheetCanvas(characters[i], context, sheetImage, i);
+        charCanv.draw();        
     }
     
 }
