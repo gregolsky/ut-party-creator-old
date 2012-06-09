@@ -1,6 +1,6 @@
 
 var Attributes = function(
-    command, //ld
+    command,           //ld
     mobility,          //m
     normalCombat,      //ws
     strength,          //s

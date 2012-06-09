@@ -64,6 +64,10 @@ function getAttribute(attrs, getter){
     return getter(attrs);
 }
 
+function mergeItem(buf, item){
+    return buf ? buf + ", " + item : item;
+}
+
 function CharacterSheetCanvas(character, context, sheetImg, nr){
     var self = this;
     self.character = character;
@@ -77,34 +81,64 @@ function CharacterSheetCanvas(character, context, sheetImg, nr){
     
     self.draw = function(){
         self.context.drawImage(self.sheetImg, 0, self.sy, self.sheetImg.width, self.sheetImg.height);
-        self.fillText("name", 42, 55);
-        self.fillText("race", 42, 90);
-        self.fillText("prof", 42, 130);
-        self.fillText("ld", 20, 167);
-        self.fillText("m", 39, 55);
-        self.fillText("ws", 39, 55);                        
-        self.fillText("s", 42, 55);
-        self.fillText("sp", 42, 55);
-        self.fillText("bs", 42, 90);
-        self.fillText("t", 39, 55);
-        self.fillText("w", 39, 55);
-        self.fillText("zdolnosc rasy", 39, 55);
-        self.fillText("zdolnosc profesji", 39, 55);                        
-        self.fillText("bron", 42, 90);
-        self.fillText("pancerz", 39, 55);
-        self.fillText("ekwipunek", 39, 55);
-        self.fillText("koszt", 39, 55);
+        var c = character;
+        self.fillText(c.name(), 40, 55);
+        var race = raceById(c.raceId());
+        var rAttrs = race.attributes;
+        var prof = professionById(c.professionId());
+        self.fillText(race.name, 42, 92);
+        self.fillText(prof.name, 40, 129);
+        self.fillText(rAttrs.getCommand(), 20, 166);
+        self.fillText(rAttrs.getMobility(), 52, 175);
+        self.fillText(rAttrs.getNormalCombat(), 86, 184); 
+        self.fillText(rAttrs.getStrength(), 121, 191);
+        self.fillText(rAttrs.getCondition(), 152, 197);
+        self.fillText(rAttrs.getRangeWeapons(), 189, 201);
+        self.fillText(rAttrs.getToughness(), 230, 203);
+        self.fillText(rAttrs.getVitality(), 262, 202);
+        self.fillText(race.talent, 225, 45);
+        self.fillText(prof.talent, 229, 104); 
+
+        var wpnEq = c.weaponsEq().map(function(x){ return x.name });
+        self._fillInLines(wpnEq, 200, 398, 48);
+
+        var armEq = c.armorEq().map(function(x){ return x.name });
+        self._fillInLines(armEq, 200, 404, 94);
+
+        self.fillText("", 410, 143); //additional eq
+        self.fillText(c.cost(), 601, 192);
     };
+
+    self._fillInLines = function(items, width, x, y){
+        var buf = "";
+        var itemIdx = 0;
+        var curLineIdx = 0;
+
+        while (itemIdx < items.length){
+            if (self.context.measureText(mergeItem(buf, items[itemIdx])).width > width)
+            {
+                self.fillText(buf, x, y + (curLineIdx * 15));
+                curLineIdx++;
+                buf = ""
+            }
+
+            buf = mergeItem(buf, items[itemIdx]);
+            itemIdx++; 
+        }
+
+        if (buf){
+            self.fillText(buf, x, y + (curLineIdx * 15));
+        }
+    }
 }
 
 function printTeamCharacterSheets(){
     
-    //if (!ViewModel || !ViewModel.team || ViewModel.team.characters().length == 0){
-    //    return;
-    //}
+    if (!ViewModel || !ViewModel.team || ViewModel.team.characters().length == 0){
+        return;
+    }
     
-    //var characters = ViewModel.team.characters();
-    var characters = [ 'a', 'a' ]; 
+    var characters = ViewModel.team.characters();
     var sheetWidth = 654;
     var sheetHeight = 239;
     
@@ -119,6 +153,8 @@ function printTeamCharacterSheets(){
         var charCanv = new CharacterSheetCanvas(characters[i], context, sheetImage, i);
         charCanv.draw();        
     }
+
+    window.open(canvas.toDataURL('image/png'));
     
 }
 
