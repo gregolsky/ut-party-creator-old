@@ -88,7 +88,7 @@
                 </div>
                 <div class="sectionContent">
                     <div class="field">
-                        <label for="teamPoints" >Punkty początkowe:</label>
+                        <label for="teamPoints" >Punkty początkowe</label>
                         <select type="text" name="teamPoints" data-bind="value: team.points" >
                             <option value="750">750</option>
                             <option value="1000">1000</option>
@@ -98,7 +98,7 @@
                     <div class="field">
                         
                         <label for="teamNature" >
-                            Charakter drużyny:
+                            Charakter drużyny
                         </label>
 
                         <select name="teamNature" data-bind="value: team.nature" >
@@ -118,20 +118,20 @@
                 
                 <div class="sectionContent">
                     <div class="field">
-                        <label for="characterCost" >Koszt postaci:</label>
+                        <label for="characterCost" >Koszt postaci</label>
                         <span data-bind="text: character().cost()" >
                             
                         </span>
                     </div>
                     <div class="field">
                         <label for="name" >
-                            Imię:
+                            Imię
                         </label>
                         <input name="name" type="text" data-bind="value: character().name" required />       
                     </div>
                     <div class="field">
                         <label for="race" >
-                            Rasa:
+                            Rasa
                         </label>
                         
                         <select name="race" type="text"
@@ -145,13 +145,13 @@
                     </div>
                     
                     <div class="field">
-                        <label for="attributes">Atrybuty:</label>
+                        <label for="attributes">Atrybuty</label>
                         <div class="labelMargin" data-bind="template: { name: 'attributes-template',  data: raceById(character().raceId()).attributes }"></div>
                     </div>
                     
                     <div class="field">
                         <label for="profession" >
-                            Profesja:
+                            Profesja
                         </label>
                         <select name="profession" type="text" class="required" 
                             data-bind="options: availableProfessions,
@@ -164,7 +164,7 @@
                     </div>
                                         
                     <div class="field">
-                        <label>Ekwipunek:</label>
+                        <label>Ekwipunek</label>
                     </div>
 
                     <div id="characterEqEditor" class="field labelMargin" >
@@ -235,7 +235,7 @@
                     Skład drużyny
                 </div>
                 <div class="field">
-                    <label>Pozostała liczba punktów:</label>
+                    <label>Pozostała liczba punktów</label>
                     <span data-bind="text: pointsAvailable" ></span>
                 </div>
                 <table id="teamCharactersTable" >
