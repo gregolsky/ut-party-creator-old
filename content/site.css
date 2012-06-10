@@ -2,10 +2,11 @@
     body{
         background-color: #AAA;
         font-size: large;
-        font-family: Verdana;
+        font-family: Verdana, Helvetica;
         color: Black;
+        font-variant: small-caps;
     }
-
+    
     h2{
         font-family: Arial;
         margin: 5px;
@@ -82,6 +83,11 @@
     #characterEqEditor{
         font-size: small;
     }
+    
+    #characterEqEditor li.placeholder{
+        margin: 10px;
+        padding: 10px;
+    }
 
     .hidden{
         display: none;
@@ -104,6 +110,7 @@
     .labelMargin{
         margin-left: 305px;
     }
+
 
 @media screen{
 
