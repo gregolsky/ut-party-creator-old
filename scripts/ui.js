@@ -68,21 +68,23 @@ function mergeItem(buf, item){
     return buf ? buf + ", " + item : item;
 }
 
-function CharacterSheetCanvas(character, context, sheetImg, nr){
+function CharacterSheetCanvas(character, context, sheetImg, sx, sy){
     var self = this;
     self.character = character;
     self.context = context;
     self.sheetImg = sheetImg;
-    self.sy = nr * self.sheetImg.height;
+    self.sy = sy;
+    self.sx = sx;
     
     self.fillText = function(text, x, y){
-        self.context.fillText(text, x, y + self.sy);
+        self.context.fillText(text, x + self.sx, y + self.sy);
     };
     
     self.draw = function(){
-        self.context.drawImage(self.sheetImg, 0, self.sy, self.sheetImg.width, self.sheetImg.height);
+        self.context.drawImage(self.sheetImg, self.sx, self.sy, self.sheetImg.width, self.sheetImg.height);
         var c = character;
         self.fillText(c.name(), 40, 55);
+
         var race = raceById(c.raceId());
         var rAttrs = race.attributes;
         var prof = professionById(c.professionId());
@@ -143,19 +145,21 @@ function printTeamCharacterSheets(){
     var sheetHeight = 239;
     
     var canvas = document.getElementById("charactersCanvas");
-    $(canvas).attr("width", sheetWidth).attr("height", 239 * characters.length);
+    $(canvas).attr("width", sheetWidth * 2).attr("height", (239 * characters.length) + 1);
     
     var sheetImage = new Image();
     sheetImage.src = $("input[name=formImageData]").val();
     
     var context = canvas.getContext("2d");
+    var cols = 2; 
     for (var i = 0; i < characters.length; i++){
-        var charCanv = new CharacterSheetCanvas(characters[i], context, sheetImage, i);
+        var col = i % cols, row = Math.floor(i / cols);
+        var sx = col * sheetImage.width, sy = row * sheetImage.height;
+        var charCanv = new CharacterSheetCanvas(characters[i], context, sheetImage, sx, sy);
         charCanv.draw();        
     }
 
     window.open(canvas.toDataURL('image/png'));
-    
 }
 
 function UtViewModel(){
