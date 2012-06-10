@@ -68,7 +68,7 @@
     table#teamCharactersTable
     {
         margin: auto;
-        width: 80%; 
+        width: 100%; 
     }
 
     table.attributesTable span, table.attributesTable td, table.attributesTable th {
