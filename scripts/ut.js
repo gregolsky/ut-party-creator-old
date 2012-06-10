@@ -205,7 +205,17 @@ function MeleeWeaponProperties(normalAttackMod, strengthAttackMod, precisionAtta
                     return false;
                 }
         
-        if (this.isTwoHanded || this.isLight){
+        if (this.isTwoHanded){
+            if (eq.Any(function(x){ return x.type == ItemType.Shield; })){
+                    return false;
+                }
+
+            if (eq.Any(function(x){ return x.type == ItemType.MeleeWeapon; })){
+                    return false;
+                }
+        }
+
+        if (this.isLight){
             if (eq.Any(function(x){ return x.type == ItemType.Shield; })){
                     return false;
                 }
@@ -359,7 +369,12 @@ var Character = function(name, raceId, professionId, costCalculationPolicy){
     }
     
     self.removeItemFromEquipment = function(item){
-        self.equipment.remove(item);
+        var removed = self.equipment.remove(item);
+        if (removed.length > 1){
+            for (var i = 1; i < removed.length; i++){
+                self.equipment.push(removed[i]);
+            }
+        }
     }
     
     self.weaponsEq = ko.computed(function(){
