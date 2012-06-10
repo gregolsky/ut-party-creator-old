@@ -2,13 +2,13 @@
     body{
         background-color: #AAA;
         font-size: large;
-        font-family: Verdana, Helvetica;
+        font-family: "Helvetica", "Arial Narrow", sans-serif;
         color: Black;
         font-variant: small-caps;
     }
     
     h2{
-        font-family: Arial;
+        font-family: "Bebas Neue", "League Gothic", Haettenschweiler, "Arial Narrow", sans-serif;
         margin: 5px;
     }
 
